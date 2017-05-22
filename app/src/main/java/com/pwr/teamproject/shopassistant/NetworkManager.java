@@ -1,6 +1,9 @@
 package com.pwr.teamproject.shopassistant;
 
-import java.io.IOException;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -11,6 +14,7 @@ import java.net.URL;
 public class NetworkManager {
 
     private String API_URL = null;
+    private String JSON;
 
     public NetworkManager()
     {
@@ -27,8 +31,39 @@ public class NetworkManager {
                 return true;
             }
             else return false;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+            return false;
         }
+    }
+
+    protected String getProducts(String productName) {
+        // Do some validation here
+
+        try {
+            URL url = new URL( API_URL + "products?name=" + productName);
+            //URL url = new URL("http://shopassistantapi.azurewebsites.net/api/storeproducts?name=" + apiQuery);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                bufferedReader.close();
+                Log.d("JSON", stringBuilder.toString());
+                return stringBuilder.toString();
+            } finally {
+                urlConnection.disconnect();
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    public String getJSON(){
+        return JSON;
     }
 }
