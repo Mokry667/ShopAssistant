@@ -31,7 +31,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     private static Double DEFAULT_PRICE = 1.0;
     private static Double DEFAULT_CLOSEST_SHOP = 2.0;
 
-    private static int DEFAULT_WIDTH = 200;
+    private static int DEFAULT_WIDTH = 225;
     private static int  DEFAULT_HEIGHT = 200;
 
     private Activity context;

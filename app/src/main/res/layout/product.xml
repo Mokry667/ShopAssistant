@@ -21,10 +21,10 @@
         <TextView
             android:id="@+id/productName"
             android:layout_width="match_parent"
-            android:layout_height="45dp"
+            android:layout_height="50dp"
             android:fontFamily="sans-serif"
             android:textColor="@android:color/background_dark"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
         <TextView
             android:id="@+id/price"
@@ -38,7 +38,8 @@
         <TextView
             android:id="@+id/closestShop"
             android:layout_width="match_parent"
-            android:layout_height="20dp" />
+            android:layout_height="15dp"
+            android:textSize="12sp" />
 
     </LinearLayout>
 
