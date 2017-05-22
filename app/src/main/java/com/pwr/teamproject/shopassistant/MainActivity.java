@@ -21,15 +21,29 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        final android.widget.SearchView searchBox = (android.widget.SearchView) findViewById(R.id.SearchID);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, ProductListActivity.class));
+                Intent intent = new Intent(MainActivity.this, ProductListActivity.class);
+                String apiQuery = searchBox.getQuery().toString();
+                intent.putExtra("searchString", apiQuery);
+                startActivity(intent);
+
+               // final JSONResponse jrespons = new JSONResponse(((android.widget.SearchView)findViewById(R.id.SearchID)).getQuery().toString());
+
+
+
+
+
             }
         });
         /*

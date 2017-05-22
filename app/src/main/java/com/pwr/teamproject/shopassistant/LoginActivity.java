@@ -181,6 +181,9 @@ public class LoginActivity extends AppCompatActivity{
             mPassword = password;
         }
 
+        public String getName(){ return mUsername;}
+        public String getPassword(){return mPassword;}
+
         @Override
         protected Boolean doInBackground(Void... params) {
 
