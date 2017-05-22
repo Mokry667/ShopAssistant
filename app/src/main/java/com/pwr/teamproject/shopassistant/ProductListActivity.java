@@ -17,53 +17,11 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductListActivity extends AppCompatActivity {
 
     // sample data
     ListView myListView;
-
-    String[] productNames ={
-            "Product1",
-            "Product2",
-            "Product3",
-            "Product4",
-            "Product5",
-            "Product6",
-            "Product7"
-    };
-
-    Double[] productPrices={
-            12.13,
-            15.11,
-            10.99,
-            12.13,
-            15.11,
-            10.99,
-            12.13,
-    };
-
-    Double[] closestShops={
-            7.3,
-            9.2,
-            7.3,
-            9.2,
-            7.3,
-            9.2,
-            7.3,
-    };
-
-    Integer[] images={
-            R.drawable.cebula,
-            R.drawable.tatra,
-            R.drawable.woda,
-            R.drawable.cebula,
-            R.drawable.tatra,
-            R.drawable.woda,
-            R.drawable.tatra,
-    };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +39,7 @@ public class ProductListActivity extends AppCompatActivity {
 
         final JSONResponse jrespons = new JSONResponse(intentString);
 
-       Thread thread =  new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             public void run() {
                 // a potentially  time consuming task
                 jrespons.doInBackground();
@@ -95,18 +53,18 @@ public class ProductListActivity extends AppCompatActivity {
         }
 
         String JSON = jrespons.getJSON();
-
-        List<String> Jimages = new ArrayList<>();
-        List<String> JproductNames = new ArrayList<>();
-        List<String> JproductPrices = new ArrayList<>();
-        List<String> JclosestShops = new ArrayList<>();
+        ArrayList<Product> productList = new ArrayList<>();
 
         try {
             JSONArray array = (JSONArray) new JSONTokener(JSON).nextValue();
             Log.d("objectPOTATO", array.toString());
-            for (int i = 0; i < array.length(); i++){
+            for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
-                JproductNames.add(object.getString("Name"));
+                productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name"), object.getString("Photo")));
+                //Products.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getInt("ProdCategoryID"), object.getString("ProdCategory"), object.getString("Photo")));
+                Log.d("Product", productList.get(i).getName());
+                Log.d("Description", productList.get(i).getDesc());
+                Log.d("Category", productList.get(i).getProdCategory());
 
             }
         } catch (JSONException e) {
@@ -115,8 +73,7 @@ public class ProductListActivity extends AppCompatActivity {
         }
 
 
-
-        ProductAdapter productAdapter = new ProductAdapter(this, images, productNames, productPrices, closestShops);
+        ProductAdapter productAdapter = new ProductAdapter(this, productList);
         myListView = (ListView) findViewById(R.id.myListView);
         myListView.setAdapter(productAdapter);
 
@@ -126,14 +83,12 @@ public class ProductListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
 
-                Toast toast = Toast.makeText(getBaseContext(),  "PRODUCT " + id + " CLICKED", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getBaseContext(), "PRODUCT " + id + " CLICKED", Toast.LENGTH_SHORT);
                 toast.show();
                 openOptionsMenu();
 
             }
         });
-
-
 
 
     }

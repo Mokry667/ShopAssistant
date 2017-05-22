@@ -25,6 +25,7 @@ public class JSONResponse extends AsyncTask<Void, Void, String> {
 
         try {
             URL url = new URL("http://shopassistantapi.azurewebsites.net/api/products?name=" + apiQuery);
+            //URL url = new URL("http://shopassistantapi.azurewebsites.net/api/storeproducts?name=" + apiQuery);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
