@@ -60,7 +60,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         Picasso.with(context)
                 .load(product.getPhoto())
                 .resize(DEFAULT_WIDTH, DEFAULT_HEIGHT)
-                .centerCrop()
+                //.centerCrop()
                 .into(image);
 
         productName.setText(product.getName());

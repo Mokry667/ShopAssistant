@@ -40,9 +40,41 @@ public class NetworkManager {
     protected String getProducts(String productName) {
         // Do some validation here
 
+
+        // this make sure that spaces are read correct
+        productName = productName.replace(" ", "%20");
+
         try {
             URL url = new URL( API_URL + "products?name=" + productName);
             //URL url = new URL("http://shopassistantapi.azurewebsites.net/api/storeproducts?name=" + apiQuery);
+            HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+            try {
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+                StringBuilder stringBuilder = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    stringBuilder.append(line).append("\n");
+                }
+                bufferedReader.close();
+                Log.d("JSON", stringBuilder.toString());
+                return stringBuilder.toString();
+            } finally {
+                urlConnection.disconnect();
+            }
+        } catch (Exception e) {
+            Log.e("ERROR", e.getMessage(), e);
+            return null;
+        }
+    }
+
+    protected String getStoreProducts(String productName) {
+        // Do some validation here
+
+        // this make sure that spaces are read correct
+        productName = productName.replace(" ", "%20");
+
+        try {
+            URL url = new URL( API_URL + "storeproducts?name=" + productName);
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));

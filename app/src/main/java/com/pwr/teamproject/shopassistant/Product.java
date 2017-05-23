@@ -9,25 +9,15 @@ public class Product {
     private int id;
     private String name;
     private String desc;
-    private int prodCategoryId;
-    private String prodCategory;
+    private ProdCategory prodCategory;
     private String photo;
 
-    Product(int id, String name, String desc, int prodCategoryId, String prodCategory, String photo){
+    Product(int id, String name, String desc, ProdCategory prodCategory, String photo){
         this.id = id;
         this.name = name;
         this.desc = desc;
-        this.prodCategoryId = prodCategoryId;
         this.prodCategory = prodCategory;
         this.photo = photo;
-    }
-
-    public int getProdCategoryId() {
-        return prodCategoryId;
-    }
-
-    public void setProdCategoryId(int prodCategoryId) {
-        this.prodCategoryId = prodCategoryId;
     }
 
     public int getId() {
@@ -46,11 +36,11 @@ public class Product {
         this.photo = photo;
     }
 
-    public String getProdCategory() {
+    public ProdCategory getProdCategory() {
         return prodCategory;
     }
 
-    public void setProdCategory(String prodCategory) {
+    public void setProdCategory(ProdCategory prodCategory) {
         this.prodCategory = prodCategory;
     }
 

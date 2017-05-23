@@ -1,5 +1,6 @@
 package com.pwr.teamproject.shopassistant;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +23,8 @@ public class ProductListActivity extends AppCompatActivity {
 
     // sample data
     ListView myListView;
+
+    ArrayList<Product> productList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,8 @@ public class ProductListActivity extends AppCompatActivity {
 
         String intentString = getIntent().getStringExtra("searchString");
         Log.d("IntentString", intentString);
+
+
 
         ProductFetchTask fetchTask = new ProductListActivity.ProductFetchTask(intentString);
         fetchTask.execute((Void) null);
@@ -151,7 +155,10 @@ public class ProductListActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(final String JSON) {
-            ArrayList<Product> productList = new ArrayList<>();
+            productList = new ArrayList<>();
+
+            // temporary solution
+            //productNames = new ArrayList<>();
 
             try {
                 if(JSON != null){
@@ -159,11 +166,14 @@ public class ProductListActivity extends AppCompatActivity {
                     Log.d("objectPOTATO", array.toString());
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
-                        productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name"), object.getString("Photo")));
+                        productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"),
+                                new ProdCategory(object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name")), object.getString("Photo")));
+
+                        //productNames.add(i, object.getString("Name"));
+
                         //Products.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getInt("ProdCategoryID"), object.getString("ProdCategory"), object.getString("Photo")));
                         Log.d("Product", productList.get(i).getName());
                         Log.d("Description", productList.get(i).getDesc());
-                        Log.d("Category", productList.get(i).getProdCategory());
 
                     }
                 }
@@ -176,15 +186,23 @@ public class ProductListActivity extends AppCompatActivity {
             myListView = (ListView) findViewById(R.id.myListView);
             myListView.setAdapter(productAdapter);
 
+
             // on product click
             myListView.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
-                    Toast toast = Toast.makeText(getBaseContext(), "PRODUCT " + id + " CLICKED", Toast.LENGTH_SHORT);
-                    toast.show();
+                    //Toast toast = Toast.makeText(getBaseContext(), "PRODUCT " + productNames.get((int)id)+ " CLICKED", Toast.LENGTH_SHORT);
+                    //toast.show();
                     openOptionsMenu();
+
+                    Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
+                    //intent.putExtra("productName", productNames.get((int)id));
+                    intent.putExtra("productName", productList.get((int)id).getName());
+                    intent.putExtra("description", productList.get((int)id).getDesc());
+                    intent.putExtra("photo", productList.get((int)id).getPhoto());
+                    startActivity(intent);
 
                 }
             });

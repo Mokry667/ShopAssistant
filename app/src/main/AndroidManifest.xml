@@ -3,6 +3,7 @@
     package="com.pwr.teamproject.shopassistant">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <permission android:name="android.permission.INTERNET" />
 
     <application
@@ -28,7 +29,11 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login"></activity>
+            android:label="@string/title_activity_login" />
+        <activity
+            android:name=".ProductDetailActivity"
+            android:label="@string/title_activity_product_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
