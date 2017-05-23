@@ -39,6 +39,7 @@ public class ProductListActivity extends AppCompatActivity {
 
         String intentString = getIntent().getStringExtra("searchString");
         Log.d("IntentString", intentString);
+        setTitle(intentString);
 
 
 

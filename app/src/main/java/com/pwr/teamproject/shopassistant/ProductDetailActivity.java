@@ -40,6 +40,7 @@ public class ProductDetailActivity extends AppCompatActivity {
 
 
         String intentProductName = getIntent().getStringExtra("productName");
+        setTitle(intentProductName);
 
         /*
         String intentDescription = getIntent().getStringExtra("description");
