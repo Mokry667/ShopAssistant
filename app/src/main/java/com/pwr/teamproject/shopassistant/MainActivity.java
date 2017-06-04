@@ -114,7 +114,8 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_categories) {
 
         } else if (id == R.id.nav_stores) {
-
+            Intent intent = new Intent(MainActivity.this, StoreListActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_shopping_list) {
 
         } else if (id == R.id.nav_settings) {

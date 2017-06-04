@@ -17,6 +17,7 @@ public class Store {
         this.name = name;
         this.address = address;
         this.lat = lat;
+        this.lng = lng;
     }
 
     public int getId() {

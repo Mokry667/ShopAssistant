@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="80dp"
+    android:descendantFocusability="blocksDescendants"
+    android:weightSum="1">
+
+    <TextView
+        android:id="@+id/storeName"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:text="TextView"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/storeAddress"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.4"
+        android:text="TextView"
+        android:textSize="12sp" />
+
+
+    <Button
+        android:id="@+id/showOnMap"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.3"
+        android:drawableLeft="@android:drawable/ic_dialog_map"
+        android:drawableTint="@color/colorPrimaryDark"
+        android:text="show on map"
+        android:textSize="10sp" />
+
+</LinearLayout>
