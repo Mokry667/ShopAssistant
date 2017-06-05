@@ -68,6 +68,17 @@ public class NetworkManager {
         return getFromAPI(request + productName);
     }
 
+    protected String getProductsCheapest(String productName, String lat, String lng) {
+
+        String request = "products?name=;";
+        productName = productName.replace(" ", "%20");
+        String locationRequest = "&action=cheapest";
+        String latRequest = "&lat=";
+        String lngRequest = "&lng=";
+
+        return getFromAPI(request + productName + locationRequest + latRequest + lat + lngRequest + lng);
+    }
+
     protected String getStoreProducts(String productName) {
 
         String request = "storeproducts?name=";
