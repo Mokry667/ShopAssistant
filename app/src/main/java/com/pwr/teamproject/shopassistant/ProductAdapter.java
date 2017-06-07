@@ -37,11 +37,13 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     private Activity context;
 
     private ArrayList<Product> products;
+    private ArrayList<ProductInfo> productsInfo;
 
-    public ProductAdapter(Activity context, ArrayList<Product> products) {
+    public ProductAdapter(Activity context, ArrayList<Product> products, ArrayList<ProductInfo> productsInfo) {
         super(context, R.layout.product, products);
         this.context = context;
         this.products = products;
+        this.productsInfo = productsInfo;
     }
 
     @Override
@@ -52,10 +54,12 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         ImageView image = (ImageView) rowView.findViewById(R.id.image);
         TextView productName = (TextView) rowView.findViewById(R.id.productName);
         TextView price = (TextView) rowView.findViewById(R.id.price);
-        TextView closestShop = (TextView) rowView.findViewById(R.id.closestShop);
+        TextView shopDistance = (TextView) rowView.findViewById(R.id.shopDistance);
+        TextView time = (TextView) rowView.findViewById(R.id.time);
 
 
         Product product = products.get(position);
+        ProductInfo productInfo = productsInfo.get(position);
 
         Picasso.with(context)
                 .load(product.getPhoto())
@@ -66,8 +70,9 @@ public class ProductAdapter extends ArrayAdapter<Product> {
         productName.setText(product.getName());
 
         // TO DO
-        price.setText(Double.toString(DEFAULT_PRICE) + " " + DEFAULT_CURRENCY);
-        closestShop.setText(Double.toString(DEFAULT_CLOSEST_SHOP) + " " + DEFAULT_DISTANCE);
+        price.setText(String.valueOf(productInfo.getPrice() + DEFAULT_CURRENCY));
+        shopDistance.setText(productInfo.getDistance());
+        time.setText(productInfo.getTime());
 
 
         // productButton listener

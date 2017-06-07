@@ -25,6 +25,7 @@ public class ProductListActivity extends AppCompatActivity {
     ListView myListView;
 
     ArrayList<Product> productList;
+    ArrayList<ProductInfo> productInfoList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,95 +38,14 @@ public class ProductListActivity extends AppCompatActivity {
         // add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String intentString = getIntent().getStringExtra("searchString");
-        Log.d("IntentString", intentString);
-        setTitle(intentString);
+        String searchString = getIntent().getStringExtra("searchString");
+        String lat = getIntent().getStringExtra("lat");
+        String lng = getIntent().getStringExtra("lng");
 
+        setTitle(searchString);
 
-
-        ProductFetchTask fetchTask = new ProductListActivity.ProductFetchTask(intentString);
+        ProductFetchTask fetchTask = new ProductListActivity.ProductFetchTask(searchString, lat, lng);
         fetchTask.execute((Void) null);
-
-        /*
-        String JSON = jrespons.getJSON();
-        ArrayList<Product> productList = new ArrayList<>();
-
-        try {
-            JSONArray array = (JSONArray) new JSONTokener(JSON).nextValue();
-            Log.d("objectPOTATO", array.toString());
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject object = array.getJSONObject(i);
-                productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name"), object.getString("Photo")));
-                //Products.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getInt("ProdCategoryID"), object.getString("ProdCategory"), object.getString("Photo")));
-                Log.d("Product", productList.get(i).getName());
-                Log.d("Description", productList.get(i).getDesc());
-                Log.d("Category", productList.get(i).getProdCategory());
-
-            }
-        } catch (JSONException e) {
-            // Appropriate error handling code
-            Log.d("objectPOTATO", "AdrianPotato");
-        }
-        */
-
-
-        /*
-        final JSONResponse jrespons = new JSONResponse(intentString);
-
-        Thread thread = new Thread(new Runnable() {
-            public void run() {
-                // a potentially  time consuming task
-                jrespons.doInBackground();
-            }
-        });
-        thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        String JSON = jrespons.getJSON();
-        ArrayList<Product> productList = new ArrayList<>();
-
-        try {
-            JSONArray array = (JSONArray) new JSONTokener(JSON).nextValue();
-            Log.d("objectPOTATO", array.toString());
-            for (int i = 0; i < array.length(); i++) {
-                JSONObject object = array.getJSONObject(i);
-                productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name"), object.getString("Photo")));
-                //Products.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getInt("ProdCategoryID"), object.getString("ProdCategory"), object.getString("Photo")));
-                Log.d("Product", productList.get(i).getName());
-                Log.d("Description", productList.get(i).getDesc());
-                Log.d("Category", productList.get(i).getProdCategory());
-
-            }
-        } catch (JSONException e) {
-            // Appropriate error handling code
-            Log.d("objectPOTATO", "AdrianPotato");
-        }
-        */
-
-
-        /*
-        ProductAdapter productAdapter = new ProductAdapter(this, productList);
-        myListView = (ListView) findViewById(R.id.myListView);
-        myListView.setAdapter(productAdapter);
-
-        // on product click
-        myListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                                    long id) {
-
-                Toast toast = Toast.makeText(getBaseContext(), "PRODUCT " + id + " CLICKED", Toast.LENGTH_SHORT);
-                toast.show();
-                openOptionsMenu();
-
-            }
-        });
-        */
-
 
     }
 
@@ -143,20 +63,26 @@ public class ProductListActivity extends AppCompatActivity {
     public class ProductFetchTask extends AsyncTask<Void, Void, String> {
 
         String productName;
+        String lat;
+        String lng;
 
-        ProductFetchTask(String productName) {
+        ProductFetchTask(String productName, String lat, String lng) {
             this.productName = productName;
+            this.lat = lat;
+            this.lng = lng;
         }
 
         protected String doInBackground(Void... params) {
 
             NetworkManager networkManager = new NetworkManager();
-            return networkManager.getProducts(productName);
+            return networkManager.getProductsCheapest(productName, lat, lng);
+            //return networkManager.getProducts(productName);
 
         }
 
         protected void onPostExecute(final String JSON) {
             productList = new ArrayList<>();
+            productInfoList = new ArrayList<>();
 
             // temporary solution
             //productNames = new ArrayList<>();
@@ -167,14 +93,16 @@ public class ProductListActivity extends AppCompatActivity {
                     Log.d("objectPOTATO", array.toString());
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
+
+                        /*
                         productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"),
                                 new ProdCategory(object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name")), object.getString("Photo")));
+                        */
 
-                        //productNames.add(i, object.getString("Name"));
-
-                        //Products.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"), object.getInt("ProdCategoryID"), object.getString("ProdCategory"), object.getString("Photo")));
-                        Log.d("Product", productList.get(i).getName());
-                        Log.d("Description", productList.get(i).getDesc());
+                        productList.add(new Product(object.getJSONObject("Data").getInt("Id"), object.getJSONObject("Data").getString("Name"), object.getJSONObject("Data").getString("Desc"),
+                                new ProdCategory(object.getJSONObject("Data").getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("Data").getJSONObject("ProdCategory").getString("Name")), object.getJSONObject("Data").getString("Photo")));
+                        Log.d("TEST", "It's TEST");
+                        productInfoList.add(new ProductInfo(object.getDouble("Price"), object.getString("Distance"), object.getString("Time")));
 
                     }
                 }
@@ -183,7 +111,7 @@ public class ProductListActivity extends AppCompatActivity {
                 Log.d("objectPOTATO", "AdrianPotato");
             }
 
-            ProductAdapter productAdapter = new ProductAdapter(ProductListActivity.this, productList);
+            ProductAdapter productAdapter = new ProductAdapter(ProductListActivity.this, productList, productInfoList);
             myListView = (ListView) findViewById(R.id.myListView);
             myListView.setAdapter(productAdapter);
 
@@ -194,12 +122,9 @@ public class ProductListActivity extends AppCompatActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position,
                                         long id) {
 
-                    //Toast toast = Toast.makeText(getBaseContext(), "PRODUCT " + productNames.get((int)id)+ " CLICKED", Toast.LENGTH_SHORT);
-                    //toast.show();
                     openOptionsMenu();
 
                     Intent intent = new Intent(ProductListActivity.this, ProductDetailActivity.class);
-                    //intent.putExtra("productName", productNames.get((int)id));
                     intent.putExtra("productName", productList.get((int)id).getName());
                     intent.putExtra("description", productList.get((int)id).getDesc());
                     intent.putExtra("photo", productList.get((int)id).getPhoto());

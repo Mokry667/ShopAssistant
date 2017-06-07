@@ -52,12 +52,17 @@ public class MainActivity extends AppCompatActivity
                 String apiQuery = searchBox.getQuery().toString();
                 intent.putExtra("searchString", apiQuery);
 
+                // for cheapest
                 gpsManager.updateLocation();
                 double currentLatitude = gpsManager.getLatitude();
                 double currentLongitude = gpsManager.getLongitude();
 
                 Log.i("LAT", String.valueOf(currentLatitude));
                 Log.i("LNG", String.valueOf(currentLongitude));
+
+
+                intent.putExtra("lat", String.valueOf(currentLatitude));
+                intent.putExtra("lng", String.valueOf(currentLongitude));
 
                 startActivity(intent);
             }

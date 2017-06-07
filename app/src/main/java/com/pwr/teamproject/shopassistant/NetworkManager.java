@@ -40,6 +40,7 @@ public class NetworkManager {
     protected String getFromAPI(String request) {
         try {
             URL url = new URL( API_URL + request);
+            Log.d("REQUEST", String.valueOf(url));
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             try {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
@@ -70,7 +71,7 @@ public class NetworkManager {
 
     protected String getProductsCheapest(String productName, String lat, String lng) {
 
-        String request = "products?name=;";
+        String request = "products?name=";
         productName = productName.replace(" ", "%20");
         String locationRequest = "&action=cheapest";
         String latRequest = "&lat=";
