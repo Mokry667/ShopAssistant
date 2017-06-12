@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class ProductDetailAdapter extends ArrayAdapter<StoreProduct> {
 
     private Activity context;
 
-    //private ArrayList<StoreProduct> storeProducts;
+    private ArrayList<StoreProduct> storeProducts;
 
     private ArrayList<String> storeNames;
     private ArrayList<String> storeAddresses;
@@ -48,7 +49,7 @@ public class ProductDetailAdapter extends ArrayAdapter<StoreProduct> {
 
         // used for adding to database
         // could use some optimization
-        //storeProducts = new ArrayList<>();
+        this.storeProducts = new ArrayList<>();
 
 
         storeNames = new ArrayList<>();
@@ -66,7 +67,7 @@ public class ProductDetailAdapter extends ArrayAdapter<StoreProduct> {
         DecimalFormat df = new DecimalFormat("#.##");
 
         for(StoreProduct s : storeProducts){
-            //storeProducts.add(s);
+            this.storeProducts.add(s);
 
             this.storeNames.add(s.getStore().getName());
             this.storeAddresses.add(s.getStore().getAddress());
@@ -130,7 +131,8 @@ public class ProductDetailAdapter extends ArrayAdapter<StoreProduct> {
                 }
         });
 
-        /*
+
+
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,12 +146,13 @@ public class ProductDetailAdapter extends ArrayAdapter<StoreProduct> {
 
                 // - 1 for header
                 DBManager dbManager = new DBManager(context);
-                dbManager.addDBProduct(storeProducts.get(position - 1), storeProducts.get(position - 1).getStore());
+                dbManager.addDBProduct(storeProducts.get(position - 1));
+                Toast.makeText(context, "Product added to shopping list", Toast.LENGTH_SHORT).show();
                 Log.d("SUCCESS", "PRODUCT ADDED TO DB");
 
             }
         });
-        */
+
 
         return rowView;
     }

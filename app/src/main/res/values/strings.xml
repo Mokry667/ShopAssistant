@@ -8,7 +8,6 @@
 
     <string-array name="shoppingMode_array">
         <item>Cheap</item>
-        <item>Optimal</item>
         <item>Fast</item>
     </string-array>
 
@@ -134,6 +133,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="title_activity_store_list">StoreListActivity</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
 
 
 </resources>

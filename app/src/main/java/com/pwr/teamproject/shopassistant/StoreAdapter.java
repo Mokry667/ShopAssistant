@@ -1,7 +1,8 @@
 package com.pwr.teamproject.shopassistant;
 
 import android.app.Activity;
-import android.util.Log;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,16 @@ public class StoreAdapter extends ArrayAdapter<Store> {
     private Activity context;
     private ArrayList<Store> stores;
 
-    public StoreAdapter(Activity context, ArrayList<Store> stores) {
+    private Double srcLat;
+    private Double srcLng;
+
+    public StoreAdapter(Activity context, ArrayList<Store> stores, String lat, String lng) {
         super(context, R.layout.product, stores);
         this.context = context;
         this.stores = stores;
+
+        this.srcLat = Double.valueOf(lat);
+        this.srcLng = Double.valueOf(lng);
     }
 
 
@@ -52,8 +59,14 @@ public class StoreAdapter extends ArrayAdapter<Store> {
                 View parentRow = (View) v.getParent();
                 ListView listView = (ListView) parentRow.getParent();
                 final int position = listView.getPositionForView(parentRow);
-                Log.d("CLICKED", String.valueOf(position));
-                //Toast.makeText(context, "Store " + position + " CLICKED", Toast.LENGTH_SHORT);
+
+                Intent navigation = new Intent(Intent.ACTION_VIEW, Uri
+                        .parse("http://maps.google.com/maps?saddr="
+                                + srcLat + ","
+                                + srcLng + "&daddr="
+                                + String.valueOf(stores.get(position).getLat()) + "," + String.valueOf(stores.get(position).getLng())));
+                navigation.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                context.startActivity(navigation);
 
             }
         });

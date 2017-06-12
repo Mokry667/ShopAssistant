@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/productName"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/storeAddress"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="TextView"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/storeDistance"
+        android:layout_width="50dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/price"
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        android:layout_marginRight="5dp"
+        android:layout_weight="0"
+        android:gravity="center"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        tools:text="10" />
+
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:orientation="vertical"
+        android:layout_weight="0">
+
+        <Button
+            android:id="@+id/showOnMap"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableLeft="@android:drawable/ic_dialog_map"
+            android:drawableTint="@color/colorPrimaryDark"
+            android:text="show on map"
+            android:textSize="8sp" />
+
+        <Button
+            android:id="@+id/removeFromList"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:drawableLeft="@android:drawable/ic_delete"
+            android:drawableTint="@android:color/holo_red_dark"
+            android:text="remove from list"
+            android:textSize="8sp" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -51,19 +51,5 @@
             android:entries="@array/categories_array"
             android:spinnerMode="dialog" />
 
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Availability" />
-
-        <Spinner
-            android:id="@+id/availability_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/availability_array"
-            android:spinnerMode="dialog" />
-
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

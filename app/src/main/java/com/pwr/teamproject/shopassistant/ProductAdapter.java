@@ -40,18 +40,28 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
     private ArrayList<Product> products;
     private ArrayList<ProductInfo> productsInfo;
+    private ArrayList<Double> latList;
+    private ArrayList<Double> lngList;
 
     private String sourceLat;
     private String sourceLng;
 
-    public ProductAdapter(Activity context, ArrayList<Product> products, ArrayList<ProductInfo> productsInfo, String lat, String lng) {
+    // temporary solution
+    private ArrayList<StoreProduct> storeProducts;
+
+
+    public ProductAdapter(Activity context, ArrayList<Product> products, ArrayList<ProductInfo> productsInfo, ArrayList<Double> latList, ArrayList<Double> lngList, String lat, String lng, ArrayList<StoreProduct> storeProducts) {
         super(context, R.layout.product, products);
         this.context = context;
         this.products = products;
         this.productsInfo = productsInfo;
+        this.latList = latList;
+        this.lngList = lngList;
 
         this.sourceLat = lat;
         this.sourceLng = lng;
+
+        this.storeProducts = storeProducts;
     }
 
     @Override
@@ -79,8 +89,9 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
         // TO DO
         price.setText(String.valueOf(productInfo.getPrice() + DEFAULT_CURRENCY));
-        shopDistance.setText(productInfo.getDistance());
-        time.setText(productInfo.getTime());
+
+        shopDistance.setText(productInfo.getDistance() + DEFAULT_DISTANCE);
+        //time.setText(productInfo.getTime());
 
 
         // productButton listener
@@ -112,14 +123,15 @@ public class ProductAdapter extends ArrayAdapter<Product> {
                                         .parse("http://maps.google.com/maps?saddr="
                                                 + sourceLat + ","
                                                 + sourceLng + "&daddr="
-                                                + 51.1211939 + "," + 16.986153));
+                                                + String.valueOf(latList.get(position)) + "," + String.valueOf(lngList.get(position))));
                                 navigation.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
                                 context.startActivity(navigation);
 
-                                Toast.makeText(context, "Show on map clicked for product " + position, Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.addToList:
-                                Toast.makeText(context, "add to list clicked for product " + position, Toast.LENGTH_SHORT).show();
+                                DBManager dbManager = new DBManager(context);
+                                dbManager.addDBProduct(storeProducts.get(position));
+                                Toast.makeText(context, "Product added to list", Toast.LENGTH_SHORT).show();
                                 return true;
                         }
                         return true;

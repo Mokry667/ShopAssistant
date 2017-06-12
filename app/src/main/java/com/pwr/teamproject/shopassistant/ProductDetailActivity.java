@@ -138,6 +138,8 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Log.d("objectPOTATO", "AdrianPotato");
             }
 
+            sortCheapest();
+
             ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(ProductDetailActivity.this, storeProductList, lat, lng);
             myListView = (ListView) findViewById(R.id.myListView);
             myListView.setAdapter(productDetailAdapter);
@@ -177,17 +179,5 @@ public class ProductDetailActivity extends AppCompatActivity {
         });
     }
 
-    private ArrayList<StoreProduct> getUniques(){
-        ArrayList<StoreProduct> uniqueList = new ArrayList<StoreProduct>();
-        ArrayList<Integer> indexes = new ArrayList<Integer>();
-
-        for(StoreProduct s : storeProductList){
-            if(!indexes.contains(s.getId())){
-                uniqueList.add(s);
-                indexes.add(s.getId());
-            }
-        }
-        return uniqueList;
-    }
 
 }

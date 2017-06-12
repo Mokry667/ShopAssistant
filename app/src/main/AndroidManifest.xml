@@ -3,11 +3,11 @@
     package="com.pwr.teamproject.shopassistant">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <permission android:name="android.permission.INTERNET" />
-    <permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
@@ -41,6 +41,10 @@
         <activity
             android:name=".StoreListActivity"
             android:label="@string/title_activity_store_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ShoppingListActivity"
+            android:label="@string/title_activity_shopping_list"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

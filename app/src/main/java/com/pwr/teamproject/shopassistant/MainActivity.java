@@ -19,10 +19,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener{
+
+    private GPSManager gpsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +40,12 @@ public class MainActivity extends AppCompatActivity
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
+        //this.deleteDatabase("shoppingListDB");
 
-        final GPSManager gpsManager = new GPSManager(this);
+
+
+
+        gpsManager = new GPSManager(this);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
             requestPermission();
@@ -54,11 +61,18 @@ public class MainActivity extends AppCompatActivity
                 String apiQuery = searchBox.getQuery().toString();
                 intent.putExtra("searchString", apiQuery);
 
+                Spinner modeSpinner =(Spinner) findViewById(R.id.shoppingMode_spinner);
+                final String shoppingMode = modeSpinner.getSelectedItem().toString();
+                intent.putExtra("shoppingMode", shoppingMode);
+
+                Log.d("shoppingMode", shoppingMode);
+
 
                 // for cheapest
                 gpsManager.updateLocation();
                 double currentLatitude = gpsManager.getLatitude();
                 double currentLongitude = gpsManager.getLongitude();
+                gpsManager.disconnect();
 
                 Log.i("LAT", String.valueOf(currentLatitude));
                 Log.i("LNG", String.valueOf(currentLongitude));
@@ -132,9 +146,29 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_stores) {
             Intent intent = new Intent(MainActivity.this, StoreListActivity.class);
+
+            gpsManager.updateLocation();
+            double currentLatitude = gpsManager.getLatitude();
+            double currentLongitude = gpsManager.getLongitude();
+            gpsManager.disconnect();
+
+            intent.putExtra("lat", String.valueOf(currentLatitude));
+            intent.putExtra("lng", String.valueOf(currentLongitude));
+
             startActivity(intent);
         } else if (id == R.id.nav_shopping_list) {
+            Intent intent = new Intent(MainActivity.this, ShoppingListActivity.class);
 
+            gpsManager.updateLocation();
+            double currentLatitude = gpsManager.getLatitude();
+            double currentLongitude = gpsManager.getLongitude();
+            gpsManager.disconnect();
+
+            intent.putExtra("lat", String.valueOf(currentLatitude));
+            intent.putExtra("lng", String.valueOf(currentLongitude));
+
+
+            startActivity(intent);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_sign_in) {

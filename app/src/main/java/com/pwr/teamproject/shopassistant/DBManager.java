@@ -17,7 +17,7 @@ public class DBManager extends SQLiteOpenHelper {
     // Database Version
     private static final int DATABASE_VERSION = 1;
     // Database Name
-    private static final String DATABASE_NAME = "shoppingList";
+    private static final String DATABASE_NAME = "shoppingListDB";
     // Contacts table name
     private static final String TABLE_DBPRODUCT = "DBProduct";
 
@@ -30,7 +30,7 @@ public class DBManager extends SQLiteOpenHelper {
     private double lng;
 
     // DBProduct Table Columns names
-    private static final String KEY_ID = "id";
+    private static final String KEY_STOREPRODUCT_ID = "storeProductID";
     private static final String KEY_NAME = "name";
     private static final String KEY_PRICE = "price";
     private static final String KEY_STORE_NAME = "storeName";
@@ -44,7 +44,7 @@ public class DBManager extends SQLiteOpenHelper {
     }
 
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_DB_PRODUCT_TABLE = "CREATE TABLE" + TABLE_DBPRODUCT + "(" + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
+        String CREATE_DB_PRODUCT_TABLE = "CREATE TABLE " + TABLE_DBPRODUCT + "(" + KEY_STOREPRODUCT_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
                 + KEY_PRICE + " REAL," + KEY_STORE_NAME + " TEXT," + KEY_STORE_ADDRESS + " TEXT," + KEY_LAT + " REAL," + KEY_LNG + " REAL" + ")";
         db.execSQL(CREATE_DB_PRODUCT_TABLE);
     }
@@ -57,16 +57,17 @@ public class DBManager extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void addDBProduct(StoreProduct storeProduct, Store store){
+    public void addDBProduct(StoreProduct storeProduct){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
+        values.put(KEY_STOREPRODUCT_ID, storeProduct.getId());
         values.put(KEY_NAME, storeProduct.getProduct().getName());
         values.put(KEY_PRICE, storeProduct.getPrice());
-        values.put(KEY_STORE_NAME, store.getName());
-        values.put(KEY_STORE_ADDRESS, store.getAddress());
-        values.put(KEY_LAT, store.getLat());
-        values.put(KEY_LNG, store.getLng());
+        values.put(KEY_STORE_NAME, storeProduct.getStore().getName());
+        values.put(KEY_STORE_ADDRESS, storeProduct.getStore().getAddress());
+        values.put(KEY_LAT, storeProduct.getStore().getLat());
+        values.put(KEY_LNG, storeProduct.getStore().getLng());
 
         db.insert(TABLE_DBPRODUCT, null, values);
         db.close();
@@ -83,12 +84,13 @@ public class DBManager extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 DBProduct dbProduct = new DBProduct();
-                dbProduct.setId(Integer.parseInt(cursor.getString(0)));
+                dbProduct.setStoreProductID(Integer.parseInt(cursor.getString(0)));
                 dbProduct.setName(cursor.getString(1));
                 dbProduct.setPrice(cursor.getDouble(2));
                 dbProduct.setStoreName(cursor.getString(3));
-                dbProduct.setLat(cursor.getDouble(4));
-                dbProduct.setLng(cursor.getDouble(5));
+                dbProduct.setStoreAddress(cursor.getString(4));
+                dbProduct.setLat(cursor.getDouble(5));
+                dbProduct.setLng(cursor.getDouble(6));
 
                 productList.add(dbProduct);
 
@@ -96,6 +98,13 @@ public class DBManager extends SQLiteOpenHelper {
         }
 
         return productList;
+    }
+
+    public void deleteDBProduct(DBProduct dbProduct) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_DBPRODUCT, KEY_STOREPRODUCT_ID + " = ?",
+        new String[] { String.valueOf(dbProduct.getStoreProductID()) });
+        db.close();
     }
 
 

@@ -31,7 +31,10 @@ public class StoreListActivity extends AppCompatActivity {
         // add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        StoreFetchTask fetchTask = new StoreListActivity.StoreFetchTask();
+        String lat = getIntent().getStringExtra("lat");
+        String lng = getIntent().getStringExtra("lng");
+
+        StoreFetchTask fetchTask = new StoreListActivity.StoreFetchTask(lat, lng);
         fetchTask.execute((Void) null);
     }
 
@@ -47,7 +50,13 @@ public class StoreListActivity extends AppCompatActivity {
 
     public class StoreFetchTask extends AsyncTask<Void, Void, String> {
 
-        StoreFetchTask() {}
+        String lat;
+        String lng;
+
+        StoreFetchTask(String lat, String lng) {
+            this.lat = lat;
+            this.lng = lng;
+        }
 
         protected String doInBackground(Void... params) {
 
@@ -74,7 +83,7 @@ public class StoreListActivity extends AppCompatActivity {
                 Log.d("objectPOTATO", "AdrianPotato");
             }
 
-            StoreAdapter storeAdapter = new StoreAdapter(StoreListActivity.this, storeList);
+            StoreAdapter storeAdapter = new StoreAdapter(StoreListActivity.this, storeList, lat, lng);
             myListView = (ListView) findViewById(R.id.myListView);
             myListView.setAdapter(storeAdapter);
 

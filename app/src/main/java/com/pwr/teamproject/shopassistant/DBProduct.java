@@ -6,7 +6,7 @@ package com.pwr.teamproject.shopassistant;
 
 public class DBProduct {
 
-    private int id;
+    private int storeProductID;
     private String name;
     private double price;
     private String storeName;
@@ -14,12 +14,12 @@ public class DBProduct {
     private double lat;
     private double lng;
 
-    public int getId() {
-        return id;
+    public int getStoreProductID() {
+        return storeProductID;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setStoreProductID(int storeProductID) {
+        this.storeProductID = storeProductID;
     }
 
     public String getName() {
