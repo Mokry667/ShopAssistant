@@ -1,6 +1,8 @@
 package com.pwr.teamproject.shopassistant;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -39,11 +41,17 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     private ArrayList<Product> products;
     private ArrayList<ProductInfo> productsInfo;
 
-    public ProductAdapter(Activity context, ArrayList<Product> products, ArrayList<ProductInfo> productsInfo) {
+    private String sourceLat;
+    private String sourceLng;
+
+    public ProductAdapter(Activity context, ArrayList<Product> products, ArrayList<ProductInfo> productsInfo, String lat, String lng) {
         super(context, R.layout.product, products);
         this.context = context;
         this.products = products;
         this.productsInfo = productsInfo;
+
+        this.sourceLat = lat;
+        this.sourceLng = lng;
     }
 
     @Override
@@ -91,11 +99,23 @@ public class ProductAdapter extends ArrayAdapter<Product> {
                 ListView listView = (ListView) parentRow.getParent();
                 final int position = listView.getPositionForView(parentRow);
 
+
                 // popup menu
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.showOnMap:
+
+                                // google maps
+                                // TODO test this
+                                Intent navigation = new Intent(Intent.ACTION_VIEW, Uri
+                                        .parse("http://maps.google.com/maps?saddr="
+                                                + sourceLat + ","
+                                                + sourceLng + "&daddr="
+                                                + 51.1211939 + "," + 16.986153));
+                                navigation.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+                                context.startActivity(navigation);
+
                                 Toast.makeText(context, "Show on map clicked for product " + position, Toast.LENGTH_SHORT).show();
                                 return true;
                             case R.id.addToList:

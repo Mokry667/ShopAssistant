@@ -94,11 +94,6 @@ public class ProductListActivity extends AppCompatActivity {
                     for (int i = 0; i < array.length(); i++) {
                         JSONObject object = array.getJSONObject(i);
 
-                        /*
-                        productList.add(new Product(object.getInt("Id"), object.getString("Name"), object.getString("Desc"),
-                                new ProdCategory(object.getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("ProdCategory").getString("Name")), object.getString("Photo")));
-                        */
-
                         productList.add(new Product(object.getJSONObject("Data").getInt("Id"), object.getJSONObject("Data").getString("Name"), object.getJSONObject("Data").getString("Desc"),
                                 new ProdCategory(object.getJSONObject("Data").getJSONObject("ProdCategory").getInt("Id"), object.getJSONObject("Data").getJSONObject("ProdCategory").getString("Name")), object.getJSONObject("Data").getString("Photo")));
                         Log.d("TEST", "It's TEST");
@@ -111,7 +106,7 @@ public class ProductListActivity extends AppCompatActivity {
                 Log.d("objectPOTATO", "AdrianPotato");
             }
 
-            ProductAdapter productAdapter = new ProductAdapter(ProductListActivity.this, productList, productInfoList);
+            ProductAdapter productAdapter = new ProductAdapter(ProductListActivity.this, productList, productInfoList, lat, lng);
             myListView = (ListView) findViewById(R.id.myListView);
             myListView.setAdapter(productAdapter);
 
@@ -128,6 +123,9 @@ public class ProductListActivity extends AppCompatActivity {
                     intent.putExtra("productName", productList.get((int)id).getName());
                     intent.putExtra("description", productList.get((int)id).getDesc());
                     intent.putExtra("photo", productList.get((int)id).getPhoto());
+
+                    intent.putExtra("lat", lat);
+                    intent.putExtra("lng", lng);
                     startActivity(intent);
 
                 }

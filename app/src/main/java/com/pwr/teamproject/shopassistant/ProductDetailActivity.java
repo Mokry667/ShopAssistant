@@ -19,6 +19,8 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 public class ProductDetailActivity extends AppCompatActivity {
 
@@ -26,6 +28,11 @@ public class ProductDetailActivity extends AppCompatActivity {
 
     private static int DEFAULT_WIDTH = 500;
     private static int DEFAULT_HEIGHT = 500;
+
+    private String lat;
+    private String lng;
+
+    private ArrayList<StoreProduct> storeProductList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +44,13 @@ public class ProductDetailActivity extends AppCompatActivity {
         // add back button
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        this.lat = getIntent().getStringExtra("lat");
+        this.lng = getIntent().getStringExtra("lng");
+
 
 
         String intentProductName = getIntent().getStringExtra("productName");
+
         setTitle(intentProductName);
 
         /*
@@ -83,7 +94,8 @@ public class ProductDetailActivity extends AppCompatActivity {
 
         String productName;
 
-        StoreProductFetchTask(String productName) {
+        StoreProductFetchTask(String productName)
+        {
             this.productName = productName;
         }
 
@@ -95,7 +107,7 @@ public class ProductDetailActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(final String JSON) {
-            ArrayList<StoreProduct> storeProductList = new ArrayList<>();
+            storeProductList = new ArrayList<>();
 
             try {
                 if(JSON != null){
@@ -126,7 +138,7 @@ public class ProductDetailActivity extends AppCompatActivity {
                 Log.d("objectPOTATO", "AdrianPotato");
             }
 
-            ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(ProductDetailActivity.this, storeProductList);
+            ProductDetailAdapter productDetailAdapter = new ProductDetailAdapter(ProductDetailActivity.this, storeProductList, lat, lng);
             myListView = (ListView) findViewById(R.id.myListView);
             myListView.setAdapter(productDetailAdapter);
 
@@ -155,6 +167,27 @@ public class ProductDetailActivity extends AppCompatActivity {
             myListView.addHeaderView(header);
 
         }
+    }
+
+    private void sortCheapest(){
+        Collections.sort(storeProductList, new Comparator<StoreProduct>() {
+            public int compare(StoreProduct o1, StoreProduct o2) {
+                return Double.compare(o1.price, o2.price);
+            }
+        });
+    }
+
+    private ArrayList<StoreProduct> getUniques(){
+        ArrayList<StoreProduct> uniqueList = new ArrayList<StoreProduct>();
+        ArrayList<Integer> indexes = new ArrayList<Integer>();
+
+        for(StoreProduct s : storeProductList){
+            if(!indexes.contains(s.getId())){
+                uniqueList.add(s);
+                indexes.add(s.getId());
+            }
+        }
+        return uniqueList;
     }
 
 }
